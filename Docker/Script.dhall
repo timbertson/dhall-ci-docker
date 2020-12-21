@@ -4,6 +4,12 @@ let CI = ../dependencies/CI.dhall
 
 let Bash = CI.Bash
 
+let Image = ./Image.dhall
+
+let Build = ./Build.dhall
+
+let Run = ./Run.dhall
+
 let Login = { repository : Text, username : Text, secret : Text }
 
 let login =
@@ -15,4 +21,29 @@ let login =
           EOF''
         ]
 
-in  { login, Login }
+let pull = \(image : Image.Type) -> [ "docker pull \"${Image.render image}\"" ]
+
+let build = \(options : Build.Type) -> [ Build.command options ]
+
+let run = \(options : Run.Type) -> Run.script options
+
+let push = \(image : Image.Type) -> [ "docker push \"${Image.render image}\"" ]
+
+let buildAndPush =
+      \(options : Build.Type) ->
+        let pushCommands =
+              Prelude.List.map Image.Type Bash.Type push options.tags
+
+        in  Bash.join ([ build options ] # pushCommands)
+
+let freeze =
+      \(image : Image.Type) ->
+        "\$(docker inspect --format='{{index .RepoDigests 0}}' \"${Image.render
+                                                                     image}\")"
+
+let tag =
+      \(image : Image.Type) ->
+      \(tag : Image.Type) ->
+        [ "docker tag \"${Image.render image}\" \"${Image.render tag}\"" ]
+
+in  { login, Login, pull, build, run, push, buildAndPush, freeze, tag }

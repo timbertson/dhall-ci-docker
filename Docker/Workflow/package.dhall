@@ -1,16 +1,12 @@
-let Prelude = ../dependencies/Prelude.dhall
-
-let CI = ../dependencies/CI.dhall
-
-let Bash = CI.Bash
+let CI = ../../dependencies/CI.dhall
 
 let Workflow = CI.Workflow
 
 let Step = Workflow.Step
 
-let Script = ./Script.dhall
+let Script = ../Script.dhall
 
-let Repository = ./Repository.dhall
+let Registry = ../Registry.dhall
 
 let login =
       \(options : Script.Login) ->
@@ -30,11 +26,18 @@ let login =
         : Step.Type
 
 let githubCredentials =
-      { repository = Repository.github
+      { repository = Registry.github
       , username = "\$GITHUB_ACTOR"
       , secret = "GITHUB_TOKEN"
       }
 
 let loginToGithub = login githubCredentials : Step.Type
 
-in  { login, githubCredentials, loginToGithub }
+in  { login
+    , githubCredentials
+    , loginToGithub
+    , Project = ./Project.dhall
+    , branchImage = ./branchImage.dhall
+    , commitImage = ./commitImage.dhall
+    , branchName = ./branchName.dhall
+    }
