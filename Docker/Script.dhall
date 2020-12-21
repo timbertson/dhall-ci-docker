@@ -27,6 +27,16 @@ let build = \(options : Build.Type) -> [ Build.command options ]
 
 let run = \(options : Run.Type) -> Run.script options
 
+let runInCwd =
+      \(options : Run.Type) ->
+        Run.script
+          (     options
+            //  { flags =
+                      options.flags
+                    # [ "--volume", "\$PWD:/cwd", "--workdir=/cwd" ]
+                }
+          )
+
 let push = \(image : Image.Type) -> [ "docker push \"${Image.render image}\"" ]
 
 let buildAndPush =
@@ -46,4 +56,14 @@ let tag =
       \(tag : Image.Type) ->
         [ "docker tag \"${Image.render image}\" \"${Image.render tag}\"" ]
 
-in  { login, Login, pull, build, run, push, buildAndPush, freeze, tag }
+in  { login
+    , Login
+    , pull
+    , build
+    , run
+    , runInCwd
+    , push
+    , buildAndPush
+    , freeze
+    , tag
+    }
