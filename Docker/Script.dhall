@@ -21,7 +21,11 @@ let login =
           EOF''
         ]
 
-let pull = \(image : Image.Type) -> [ "docker pull \"${Image.render image}\"" ]
+let _pullCmd = \(image : Image.Type) -> "docker pull \"${Image.render image}\""
+
+let pull = \(image : Image.Type) -> [ _pullCmd image ]
+
+let tryPull = \(image : Image.Type) -> [ "${_pullCmd image} || true" ]
 
 let build = \(options : Build.Type) -> [ Build.command options ]
 
@@ -59,6 +63,7 @@ let tag =
 in  { login
     , Login
     , pull
+    , tryPull
     , build
     , run
     , runInCwd

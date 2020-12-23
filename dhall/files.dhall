@@ -7,7 +7,7 @@ in  { files =
           Meta.Files::{
           , readme = Meta.Readme::{
             , repo = "dhall-ci-docker"
-            , componentDesc = Some "Docker"
+            , componentDesc = Some "Docker support"
             }
           }
     }

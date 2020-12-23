@@ -26,7 +26,7 @@ let login =
         : Step.Type
 
 let githubCredentials =
-      { repository = Registry.github
+      { repository = Registry.githubPackages
       , username = "\$GITHUB_ACTOR"
       , secret = "GITHUB_TOKEN"
       }

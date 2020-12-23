@@ -3,9 +3,9 @@
   You should NOT edit it manually, your changes will be lost.
 -->
 
-![CI](https://github.com/timbertson/dhall-ci-docker/workflows/CI/badge.svg)
+[![CI](https://github.com/timbertson/dhall-ci-docker/workflows/CI/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions?query=workflow%3ACI+branch%3Amaster)
 
 # dhall-ci-docker
 
-This repository provides Docker for [dhall-ci](https://github.com/timbertson/dhall-ci),
+This repository provides Docker support for [dhall-ci](https://github.com/timbertson/dhall-ci),
 you should go there for more details.

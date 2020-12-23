@@ -138,18 +138,19 @@ let sampleProject =
                 }
           : Project
 
-let buildOptions =
-    {- Computes the Docker.Build.Type for a Stage.Chained -}
+let addStageSuffix =
+      \(stage : Stage.Type) ->
+        map Image.Type Image.Type (addSuffix stage.tagSuffix)
+
+let registryCacheFrom =
+    {- The registry images we'll --cache-from -}
+      \(project : Project) ->
+      \(stage : Stage.Type) ->
+        addStageSuffix stage [ project.image, project.branchImage ]
+
+let previousStageCacheFrom =
       \(project : Project) ->
       \(chainedStage : Stage.Chained) ->
-        let stage = chainedStage.stage
-
-        let addStageSuffix =
-              map Image.Type Image.Type (addSuffix stage.tagSuffix)
-
-        let cacheFromRepo =
-              addStageSuffix [ project.image, project.branchImage ]
-
         let previousStageSuffixes =
               map
                 Stage.Type
@@ -157,18 +158,31 @@ let buildOptions =
                 (\(stage : Stage.Type) -> stage.tagSuffix)
                 chainedStage.previousStages
 
-        let cacheFromPreviousStages =
-              map
-                Text
-                Image.Type
-                (\(suffix : Text) -> addSuffix suffix project.commitImage)
-                previousStageSuffixes
+        in  map
+              Text
+              Image.Type
+              (\(suffix : Text) -> addSuffix suffix project.commitImage)
+              previousStageSuffixes
+
+let tags =
+    {- The tags we'll assign to this image -}
+      \(project : Project) ->
+      \(stage : Stage.Type) ->
+        addStageSuffix stage [ project.commitImage, project.branchImage ]
+
+let buildOptions =
+    {- Computes the Docker.Build.Type for a Stage.Chained -}
+      \(project : Project) ->
+      \(chainedStage : Stage.Chained) ->
+        let stage = chainedStage.stage
+
+        let cacheFrom =
+                registryCacheFrom project stage
+              # previousStageCacheFrom project chainedStage
 
         in        project.build
-              //  { tags =
-                      addStageSuffix
-                        [ project.commitImage, project.branchImage ]
-                  , cacheFrom = cacheFromRepo # cacheFromPreviousStages
+              //  { tags = tags project stage
+                  , cacheFrom
                   , target = stage.target
                   }
             : Build.Type
@@ -198,7 +212,19 @@ let buildChained =
     {- Advanced functionality, you probably want buildSimpleProject / buildMultiStageProject -}
       \(project : Project) ->
       \(chainedStage : Stage.Chained) ->
-        Script.buildAndPush (buildOptions project chainedStage)
+        let pull =
+              Bash.join
+                ( Prelude.List.map
+                    Image.Type
+                    Bash.Type
+                    Script.tryPull
+                    (registryCacheFrom project chainedStage.stage)
+                )
+
+        let buildAndPush =
+              Script.buildAndPush (buildOptions project chainedStage)
+
+        in  pull # buildAndPush
 
 let pushProjectStageToLatest =
       \(project : Project) ->

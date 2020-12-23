@@ -1,1 +1,4 @@
-{ googleCloud = "gcr.io", github = "docker.pkg.github.com" }
+{ googleCloud = "gcr.io"
+, githubPackages = "docker.pkg.github.com"
+, githubCR = "ghcr.io"
+}
