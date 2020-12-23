@@ -12,8 +12,6 @@ let Step = CI.Workflow.Step
 
 let Project = ../Project.dhall
 
-let branchImage = ./branchImage.dhall
-
 let commitImage = ./commitImage.dhall
 
 let isPushToMain = CI.Git.Workflow.isPushToMain
@@ -25,6 +23,15 @@ let Options =
       }
 
 let default = { build = Build.default, stages = [ Project.Stage.single ] }
+
+let encodeTag = ../encodeTag.dhall
+
+let branchImage =
+    -- we could use ./branchImage.dhall, but that's a mouthful in order to be
+    -- valid in all contexts. Since we control the full step we can
+    -- use an environment variable for more readable output
+      \(base : Image.Type) ->
+        base // { tag = Some (encodeTag "\${BRANCH_REF#refs/heads/}") }
 
 let projectConfig =
       \(options : Options) ->
@@ -47,7 +54,14 @@ let steps =
                         chainedStage.stage.desc
 
                 in      Step.bash (Project.buildChained project chainedStage)
-                    //  { name = Some "Docker build${nameSuffix}" }
+                    //  { name = Some "Docker build${nameSuffix}"
+                        , env = Some
+                            ( toMap
+                                { BRANCH_REF =
+                                    "\${{ github.head_ref || github.ref }}"
+                                }
+                            )
+                        }
 
         let pushLatestCommands =
               Prelude.List.map

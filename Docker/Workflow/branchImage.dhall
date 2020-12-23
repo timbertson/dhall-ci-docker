@@ -4,5 +4,7 @@ let Image = ../Image.dhall
 
 let branchName = ./branchName.dhall
 
+let encodeTag = ../encodeTag.dhall
+
 in  \(base : Image.Type) ->
-      base // { tag = Some "\$(echo \"${branchName}\" | tr / -)" } : Image.Type
+      base // { tag = Some (encodeTag branchName) } : Image.Type

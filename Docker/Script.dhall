@@ -71,4 +71,5 @@ in  { login
     , buildAndPush
     , freeze
     , tag
+    , encodeTag = ./encodeTag.dhall
     }
