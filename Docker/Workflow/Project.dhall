@@ -14,8 +14,6 @@ let Project = ../Project.dhall
 
 let commitImage = ./commitImage.dhall
 
-let isPushToMain = CI.Git.Workflow.isPushToMain
-
 let Options =
       { image : Image.Type
       , build : Build.Type
@@ -73,7 +71,7 @@ let steps =
         let pushLatestStep =
                   Step.bash (Bash.join pushLatestCommands)
               //  { name = Some "Docker push :latest"
-                  , `if` = Some isPushToMain
+                  , `if` = Some CI.Workflow.Expr.isPushToMain
                   }
 
         in      Prelude.List.map
