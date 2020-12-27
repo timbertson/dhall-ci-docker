@@ -70,7 +70,7 @@ let steps =
 
         let pushLatestStep =
                   Step.bash (Bash.join pushLatestCommands)
-              //  { name = Some "Docker push :latest"
+              //  { name = Some "Docker push :${Image.tag options.image}"
                   , `if` = Some CI.Workflow.Expr.isPushToMain
                   }
 
