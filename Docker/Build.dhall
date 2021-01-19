@@ -11,6 +11,26 @@ let Image = ./Image.dhall
 
 let List/map = Prelude.List.map
 
+let Mode =
+    {-|
+
+     * Buildkit:
+       Use online cache, with BUILDKIT_INLINE_CACHE=1.
+       This is the fastest, but online caching doesn't seem to work in all cases.
+
+     * BuildkitLocal:
+       As above, but attempts to pull cache images before building. This is
+       slower because it downloads all layers, even when there's no cache match.
+
+     * Docker:
+       Traditional docker build, i.e. buildkit disabled
+    -}
+      < Buildkit | BuildkitLocal | Docker >
+
+let usesBuildkit =
+      \(mode : Mode) ->
+        merge { Buildkit = True, BuildkitLocal = True, Docker = False } mode
+
 let Build =
         { buildArgs : List Text
         , dockerfile : Text
@@ -18,6 +38,7 @@ let Build =
         , cacheFrom : List Image.Type
         , target : Optional Text
         , tags : List Image.Type
+        , mode : Mode
         }
       : Type
 
@@ -28,6 +49,7 @@ let default =
       , cacheFrom = [] : List Image.Type
       , target = None Text
       , tags = [] : List Image.Type
+      , mode = Mode.Docker
       }
 
 let arguments =
@@ -45,7 +67,10 @@ let arguments =
 
         let buildArg = flag "build-arg"
 
-        let inlineCacheArg = [ "BUILDKIT_INLINE_CACHE=1" ]
+        let inlineCacheArg =
+              if    usesBuildkit options.mode
+              then  [ "BUILDKIT_INLINE_CACHE=1" ]
+              else  [] : List Text
 
         let cacheFrom =
               \(image : Image.Type) -> flag "cache-from" (Image.render image)
@@ -64,7 +89,9 @@ let arguments =
 
 let command =
       \(options : Build) ->
-        "env DOCKER_BUILDKIT=1 docker ${Bash.doubleQuoteArgs
-                                          (arguments options)}"
+        let prefix =
+              if usesBuildkit options.mode then "env DOCKER_BUILDKIT=1 " else ""
 
-in  { Type = Build, default, command, arguments }
+        in  "${prefix}docker ${Bash.doubleQuoteArgs (arguments options)}"
+
+in  { Type = Build, Mode, default, command, arguments }

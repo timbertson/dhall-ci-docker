@@ -208,18 +208,26 @@ let _testBuildOptions =
                    ]
                  }
 
+let needsPull =
+      \(buildMode : Build.Mode) ->
+        merge
+          { Buildkit = False, BuildkitLocal = True, Docker = True }
+          buildMode
+
 let buildChained =
     {- Advanced functionality, you probably want buildSimpleProject / buildMultiStageProject -}
       \(project : Project) ->
       \(chainedStage : Stage.Chained) ->
         let pull =
-              Bash.join
-                ( Prelude.List.map
-                    Image.Type
-                    Bash.Type
-                    Script.tryPull
-                    (registryCacheFrom project chainedStage.stage)
-                )
+              if    needsPull project.build.mode
+              then  Bash.join
+                      ( Prelude.List.map
+                          Image.Type
+                          Bash.Type
+                          Script.tryPull
+                          (registryCacheFrom project chainedStage.stage)
+                      )
+              else  [] : Bash.Type
 
         let buildAndPush =
               Script.buildAndPush (buildOptions project chainedStage)
