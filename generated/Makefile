@@ -60,7 +60,7 @@ render:
 .SILENT: bump
 .PHONY: bump
 bump:
-	dhall/bump --to "timbertson/dhall-ci:" --to "timbertson/dhall-ci-git:" --to "timbertson/dhall-ci-dhall:" --to "timbertson/dhall-ci-docker:" --to "timbertson/dhall-render:" --if-affects "package.dhall" --if-affects "dhall/files.dhall" --freeze-cmd="dhall --ascii freeze --inplace" --allow-unused dependencies/CI.dhall dhall/files.dhall
+	dhall/bump --to "timbertson/dhall-ci:" --to "timbertson/dhall-ci-git:" --to "timbertson/dhall-ci-dhall:" --to "timbertson/dhall-ci-docker:" --to "timbertson/dhall-render:" --if-affects "package.dhall" --if-affects "dhall/files.dhall" --freeze-cmd="dhall --ascii freeze --inplace" --allow-unused dependencies/CI.dhall dhall/Meta.dhall
 
 .SILENT: docs
 .PHONY: docs
