@@ -1,4 +1,4 @@
-    https://raw.githubusercontent.com/timbertson/dhall-ci/2c138742289b8d8466973d79ec8f666519a04520/package.dhall sha256:66abbb03d6b89fdd6cb2fea69e829d59a5b19426684183f74b9325177bcefa58
+    https://raw.githubusercontent.com/timbertson/dhall-ci/ed012b6aae42321e826f1b9d105652924d9f0775/package.dhall sha256:9b16c4079a7daf398e489117061d58512cb8f39e03be10e7c1049f2d6b2e0ff5
 /\  { Git =
-        https://raw.githubusercontent.com/timbertson/dhall-ci-git/5d17b9deb2f6d60d7371a6abab19da8ede1ce781/package.dhall sha256:69a3e6bc2919f13b3d21cf9cc1da7b3eb2220e31fa36e46a9ec9c5c03ff1179b
+        https://raw.githubusercontent.com/timbertson/dhall-ci-git/69ab02557c4eb01921ec84a118b4af36bb6481d4/package.dhall sha256:8677ab51324855f8b0f3f666f72e9b30fb3f1451b3d2220dd72af91f3b2eba81
     }
