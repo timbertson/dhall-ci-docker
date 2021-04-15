@@ -3,9 +3,7 @@
   You should NOT edit it manually, your changes will be lost.
 -->
 
-[![ci](https://github.com/timbertson/dhall-ci-docker/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/ci.yml)
-
-[![update](https://github.com/timbertson/dhall-ci-docker/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/update.yml)
+[![ci](https://github.com/timbertson/dhall-ci-docker/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/ci.yml) [![update](https://github.com/timbertson/dhall-ci-docker/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/update.yml)
 
 # dhall-ci-docker
 
