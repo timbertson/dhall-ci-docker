@@ -2,17 +2,19 @@ let Prelude = ../../dependencies/Prelude.dhall
 
 let CI = ../../dependencies/CI.dhall
 
-let Bash = CI.Bash
-
 let Image = ../Image.dhall
 
 let Build = ../Build.dhall
 
-let Step = CI.Workflow.Step
-
 let Project = ../Project.dhall
 
 let commitImage = ./commitImage.dhall
+
+let encodeTag = ../encodeTag.dhall
+
+let Bash = CI.Bash
+
+let Step = CI.Workflow.Step
 
 let Options =
       { image : Image.Type
@@ -21,8 +23,6 @@ let Options =
       }
 
 let default = { build = Build.default, stages = [ Project.Stage.single ] }
-
-let encodeTag = ../encodeTag.dhall
 
 let branchImage =
     -- we could use ./branchImage.dhall, but that's a mouthful in order to be

@@ -2,13 +2,13 @@ let Prelude = ../dependencies/Prelude.dhall
 
 let CI = ../dependencies/CI.dhall
 
-let Bash = CI.Bash
-
 let Image = ./Image.dhall
 
 let Build = ./Build.dhall
 
 let Run = ./Run.dhall
+
+let Bash = CI.Bash
 
 let Login = { repository : Text, username : Text, secret : Text }
 

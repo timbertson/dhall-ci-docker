@@ -1,12 +1,12 @@
 let CI = ../../dependencies/CI.dhall
 
-let Workflow = CI.Workflow
-
-let Step = Workflow.Step
-
 let Script = ../Script.dhall
 
 let Registry = ../Registry.dhall
+
+let Workflow = CI.Workflow
+
+let Step = Workflow.Step
 
 let login =
       \(options : Script.Login) ->

@@ -5,9 +5,9 @@ let Prelude = ../dependencies/Prelude.dhall
 
 let CI = ../dependencies/CI.dhall
 
-let Bash = CI.Bash
-
 let Image = ./Image.dhall
+
+let Bash = CI.Bash
 
 let List/map = Prelude.List.map
 

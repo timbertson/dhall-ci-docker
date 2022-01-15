@@ -8,13 +8,13 @@ let Prelude = ../dependencies/Prelude.dhall
 
 let CI = ../dependencies/CI.dhall
 
-let Bash = CI.Bash
-
 let Image = ./Image.dhall
 
 let Build = ./Build.dhall
 
 let Script = ./Script.dhall
+
+let Bash = CI.Bash
 
 let map = Prelude.List.map
 
