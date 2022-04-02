@@ -1,9 +1,9 @@
     (   env:DHALL_CI
-      ? https://raw.githubusercontent.com/timbertson/dhall-ci/2e1fa95a589c79a289525d5c96955b8ca5eb7f2d/package.dhall
-          sha256:9b16c4079a7daf398e489117061d58512cb8f39e03be10e7c1049f2d6b2e0ff5
+      ? https://raw.githubusercontent.com/timbertson/dhall-ci/1230f1e9299d80c7a0292ef70eaa06ce5c0f0244/package.dhall
+          sha256:12954ab5215e3b11c3cb273d5953ceca7e96604d2612e0db2d1f2ffc9b1254e2
     )
 /\  { Git =
           env:DHALL_CI_GIT
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-git/812bf7407b5b3243bbac9c9c7724302de59b3705/package.dhall
+        ? https://raw.githubusercontent.com/timbertson/dhall-ci-git/e4e2cb45bdaa7bf2d4f6054feaf814fd1d6986b1/package.dhall
             sha256:f8071927cf5f6ae54968ee72806efa4b2efb9cbd1916fb46d3c1c1816465ea52
     }
